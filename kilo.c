@@ -21,8 +21,12 @@ void enableRawMode(void)
 
 	struct termios raw = orig_termios;
 
-	/* Disable echo and turn offcanonical mode */
-	raw.c_lflag &= ~(ECHO | ICANON);
+	/*
+	 * 1. Disable echo
+	 * 2. turn offcanonical mode
+	 * 3. Turn off SIGINT and SIGSTP controls
+	 */
+	raw.c_lflag &= ~(ECHO | ICANON | ISIG);
 
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
